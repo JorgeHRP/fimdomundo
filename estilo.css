@@ -8,7 +8,7 @@
   .sub{color:var(--mut);margin:8px 0 0;font-size:15px}
   h2{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);margin:24px 0 10px;font-weight:800}
   h2 b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--amarelo);color:#000;margin-right:6px;font-size:12px}
-  .cenas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .cenas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .cena{position:relative;border:2px solid transparent;border-radius:12px;overflow:hidden;padding:0;background:var(--card);cursor:pointer;aspect-ratio:9/16}
   .cena img{width:100%;height:100%;object-fit:cover;display:block}
   .cena span{position:absolute;left:0;right:0;bottom:0;padding:18px 6px 6px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-weight:800;font-size:12px;color:#fff;text-align:left}
@@ -36,11 +36,11 @@
   .selnome{font-size:12px;color:var(--amarelo);margin-top:10px;font-weight:800}
   label.ctl{display:flex;align-items:center;gap:10px;font-size:16px;color:var(--mut);margin-top:2px;max-width:520px;margin-left:auto;margin-right:auto}
   label.ctl input[type=range]{flex:1;accent-color:var(--amarelo)}
-  .bandeja{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .bandeja{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   .bandeja button{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--card);padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--mut);font:600 10px Inter,sans-serif}
   .bandeja img{width:100%;height:70%;object-fit:contain}
-  .bandeja.corpos{grid-template-columns:repeat(5,1fr)}
-  @media (max-width:430px){ .bandeja.corpos{grid-template-columns:repeat(3,1fr)} }
+  .bandeja.corpos{grid-template-columns:repeat(5,minmax(0,1fr))}
+  @media (max-width:430px){ .bandeja.corpos{grid-template-columns:repeat(3,minmax(0,1fr))} }
   .bandeja.corpos button{aspect-ratio:3/4}
   .bandeja.corpos img{height:78%}
   .filtro{margin:0 0 10px}
@@ -81,3 +81,10 @@
   .ajuste .setas button{min-width:46px;min-height:42px;font-size:18px}
   .ferramentas button{min-height:40px}
   @media (max-height:700px){ .palco{height:min(42dvh,calc((100vw - 32px)*16/9))} label.ctl input[type=range]{height:30px} }
+  /* nada pode ficar mais largo que a tela (evita o "mini zoom" no celular) */
+  html,body{overflow-x:clip;max-width:100%}
+  img,canvas,video{max-width:100%}
+  .bandeja button,.cena{min-width:0}
+  .bandeja button{overflow:hidden;text-align:center;line-height:1.15;overflow-wrap:break-word;hyphens:manual}
+  .chips button{max-width:100%;white-space:normal;text-align:left}
+  @media (max-width:360px){ .bandeja button{font-size:9px;padding:6px} }

@@ -267,7 +267,7 @@ for (const a of ACESS){
   b.onclick=async()=>{ const img=await carregarImg(`acessorios/${a.id}.webp`); adicionarAcessorio(a.nome, paraCanvas(img,700), null); };
   $("#bandeja").appendChild(b);
 }
-{ const b=document.createElement("button"); b.className="meu"; b.innerHTML="<big>＋</big>Meu acessório"; b.onclick=()=>$("#arquivoAcess").click(); $("#bandeja").appendChild(b); }
+{ const b=document.createElement("button"); b.className="meu"; b.innerHTML="<big>＋</big>Subir o seu"; b.onclick=()=>$("#arquivoAcess").click(); $("#bandeja").appendChild(b); }
 function adicionarAcessorio(nome, foto, recorte){
   const l = novaCamada("acess", nome, foto, recorte);
   const p = estado.camadas.find(c=>!c.oculto && (c.cat==="pessoa"||c.cat==="corpo"));
