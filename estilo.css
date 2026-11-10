@@ -88,3 +88,10 @@
   .bandeja button{overflow:hidden;text-align:center;line-height:1.15;overflow-wrap:break-word;hyphens:manual}
   .chips button{max-width:100%;white-space:normal;text-align:left}
   @media (max-width:360px){ .bandeja button{font-size:9px;padding:6px} }
+  /* aviso do navegador interno do Instagram/Facebook/TikTok */
+  .aviso-app{margin:0 0 18px;padding:14px;border-radius:14px;background:#2a1f05;border:2px solid var(--amarelo);color:var(--txt);font-size:14px;line-height:1.4}
+  .aviso-app>b{display:block;color:var(--amarelo);font-size:16px;margin-bottom:4px}
+  .aviso-app p{margin:0 0 10px}
+  .aviso-app p:last-child{margin-bottom:0}
+  .so-app{display:none;color:var(--amarelo);font-weight:700}
+  body.no-app .so-app{display:block}

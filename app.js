@@ -43,6 +43,22 @@ const W = 1080, H = 1920, DUR = 10, IMPACTO = 3, PUNCH = 6.5;
 const $ = s => document.querySelector(s);
 const tela = $("#tela"), ctx = tela.getContext("2d");
 
+// navegador interno do Instagram/Facebook/TikTok: download costuma falhar, então avisa e oferece sair
+{
+  const ua = navigator.userAgent || "";
+  if (/Instagram|FBAN|FBAV|FB_IAB|FBIOS|musical_ly|BytedanceWebview|TikTok/i.test(ua)) {
+    document.body.classList.add("no-app");
+    $("#avisoApp").classList.remove("oculto");
+    if (/Android/i.test(ua)) {
+      // Android: o intent abre o mesmo endereço no navegador padrão
+      const b = $("#btnAbrirNav");
+      b.href = `intent://${location.host}${location.pathname}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
+      b.classList.remove("oculto");
+      $("#avisoAppTxt").innerHTML = 'Toca no botão abaixo (ou nos <b>⋯</b> → <b>"Abrir no navegador"</b>).';
+    }
+  }
+}
+
 const estado = {
   cena:null, fundo:null, camadas:[], sel:null,
   texto:{id:"texto", nome:"Texto", x:W*0.5, y:H*0.12, s:1, r:0, flip:false, w:W*0.9, h:300},

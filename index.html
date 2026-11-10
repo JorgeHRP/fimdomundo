@@ -20,6 +20,13 @@
   <p class="sub">Escolhe o apocalipse, sobe tua foto, prepara o kit.</p>
 </header>
 
+<!-- aparece só dentro do app do Instagram/Facebook/TikTok, onde o download costuma falhar -->
+<div class="aviso-app oculto" id="avisoApp">
+  <b>Abre no navegador pra conseguir baixar</b>
+  <p id="avisoAppTxt">Toca nos <b>⋯</b> no canto de cima e escolhe <b>"Abrir no navegador"</b>.</p>
+  <a class="btn oculto" id="btnAbrirNav">Abrir no navegador</a>
+</div>
+
 <h2><b>1</b>Escolhe o apocalipse</h2>
 <div class="cenas" id="cenas"></div>
 
@@ -88,6 +95,7 @@
 <div id="mImg" class="modal oculto">
   <img id="imgFinal" alt="Tua montagem">
   <p>Se o botão não funcionar, segura o dedo na imagem e salva.</p>
+  <p class="so-app">Tá no app do Instagram? Se não baixar, abre o site no navegador (⋯ no canto → "Abrir no navegador").</p>
   <div class="linha">
     <button class="btn compartilhar">Compartilhar</button>
     <a class="btn sec" id="lnkImg" download="meu-fim-do-mundo.png">Baixar</a>
@@ -106,6 +114,7 @@
       <button class="btn compartilhar">Compartilhar</button>
       <a class="btn sec" id="lnkVid" download="meu-fim-do-mundo.mp4">Baixar</a>
     </div>
+    <p class="so-app">Tá no app do Instagram? O vídeo só baixa no navegador: ⋯ no canto → "Abrir no navegador".</p>
     <div class="dica-musica" id="dicaMusicaVid"></div>
     <button class="btn sec fechar">Voltar e editar</button>
     <p>Posta e marca <b class="amarelo">@jorgerprado</b> 👀</p>
