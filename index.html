@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; connect-src 'self' blob: data: https://cdn.jsdelivr.net https://storage.googleapis.com; frame-src 'self'; img-src 'self' blob: data:; media-src 'self' blob:; style-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monte seu fim do mundo</title>
+<meta name="description" content="Escolha o apocalipse, sobe tua foto e prepara o kit de emergência. Por @jorgerprado.">
+<meta property="og:title" content="Monte seu fim do mundo">
+<meta property="og:description" content="Escolha o apocalipse, sobe tua foto e prepara o kit de emergência.">
+<meta property="og:image" content="cenas/og.jpg">
+<meta name="theme-color" content="#0d0b14">
+<link rel="stylesheet" href="fontes/fontes.css">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header>
+  <h1>Monte seu<br><span>fim do mundo</span></h1>
+  <p class="sub">Escolhe o apocalipse, sobe tua foto, prepara o kit.</p>
+</header>
+
+<h2><b>1</b>Escolhe o apocalipse</h2>
+<div class="cenas" id="cenas"></div>
+
+<h2><b>2</b>Sobe tua foto</h2>
+<div class="foto-box">
+  <div class="linha">
+    <button class="btn" id="btnFoto">Escolher foto</button>
+    <button class="btn sec oculto" id="btnMaisPessoa">+ Outra pessoa</button>
+  </div>
+  <div class="status" id="status">De corpo inteiro ou de costas fica melhor. A foto não sai do teu celular.</div>
+</div>
+<input type="file" id="arquivo" accept="image/*" class="oculto">
+<input type="file" id="arquivoAcess" accept="image/*" class="oculto">
+
+<div id="editor" class="oculto">
+  <h2><b>3</b>Monta a cena</h2>
+  <div class="grudado" id="grudado">
+    <div class="palco"><canvas id="tela" width="1080" height="1920"></canvas></div>
+    <div class="selnome" id="selNome"></div>
+    <label class="ctl">↕️ <input type="range" id="rTam" min="0" max="1000" value="500" aria-label="Tamanho"></label>
+    <label class="ctl">🔄 <input type="range" id="rRot" min="-180" max="180" value="0" aria-label="Girar"></label>
+  </div>
+  <p class="dica">Toca pra escolher · arrasta com um dedo · pinça com dois pra aumentar e girar</p>
+  <div class="ferramentas" id="ferramentas">
+    <button id="tCortar">✂️ Cortar</button>
+    <button id="tFundo">🪄 Fundo</button>
+    <button id="tHD">✨ Recorte caprichado</button>
+    <button id="tEspelhar">↔️ Espelhar</button>
+    <button id="tFrente">⬆️ Frente</button>
+    <button id="tTras">⬇️ Trás</button>
+    <button id="tSemCorpo" class="perigo oculto">✖ Tirar corpinho</button>
+    <button id="tApagar" class="perigo">🗑️ Apagar</button>
+  </div>
+  <div class="ajuste" id="ajuste">
+    <span class="setas"><button data-a="esq">⬅️</button><button data-a="cima">⬆️</button><button data-a="baixo">⬇️</button><button data-a="dir">➡️</button><button data-a="menor">➖</button><button data-a="maior">➕</button></span>
+  </div>
+
+  <h2><b>4</b>Corpinho <span class="h2-sub">(tua cabeça num corpo)</span></h2>
+  <div class="chips filtro" id="filtroCorpo">
+    <button data-g="f" class="on">👩 Mulher</button><button data-g="m">👨 Homem</button>
+  </div>
+  <p class="dica dica-corpo" id="dicaCorpo"></p>
+  <div class="bandeja corpos" id="corpos"></div>
+  <button class="btn tirar oculto" id="btnSemCorpo">✖ Tirar corpinho e voltar pra minha foto</button>
+
+  <h2><b>5</b>Acessórios</h2>
+  <div class="chips filtro" id="abasAcess"></div>
+  <div class="bandeja" id="bandeja"></div>
+
+  <h2><b>6</b>Escreve a frase</h2>
+  <textarea id="frase" rows="2">Ainda bem que preparei minha mochila de emergência</textarea>
+  <div class="chips" id="chips"></div>
+
+  <h2><b>7</b>Baixa</h2>
+  <button class="btn" id="btnBaixar">📸 Baixar imagem</button>
+  <h2 class="h2-perto">ou vídeo de 10 s</h2>
+  <div class="chips filtro" id="estiloVideo">
+    <button data-e="agitado" class="on">🔥 Agitado (tremida, flash, zoom no rosto)</button>
+    <button data-e="suave">🌙 Suave (só um zoom lento)</button>
+  </div>
+  <div class="mt10"><button class="btn" id="btnVideo">🎬 Gerar vídeo</button></div>
+  <div class="dica-musica" id="dicaMusica"></div>
+</div>
+
+<!-- resultado imagem -->
+<div id="mImg" class="modal oculto">
+  <img id="imgFinal" alt="Tua montagem">
+  <p>Se o botão não funcionar, segura o dedo na imagem e salva.</p>
+  <div class="linha">
+    <button class="btn compartilhar">Compartilhar</button>
+    <a class="btn sec" id="lnkImg" download="meu-fim-do-mundo.png">Baixar</a>
+  </div>
+  <button class="btn sec fechar">Voltar e editar</button>
+  <p>Posta e marca <b class="amarelo">@jorgerprado</b> que eu reposto 👀</p>
+</div>
+
+<!-- vídeo -->
+<div id="mVid" class="modal oculto">
+  <div id="vidPalco"></div>
+  <div class="barra"><i id="vidBarra"></i></div>
+  <p id="vidStatus">Gravando... não sai da tela 🎬</p>
+  <div id="vidAcoes" class="vid-acoes oculto">
+    <div class="linha">
+      <button class="btn compartilhar">Compartilhar</button>
+      <a class="btn sec" id="lnkVid" download="meu-fim-do-mundo.mp4">Baixar</a>
+    </div>
+    <div class="dica-musica" id="dicaMusicaVid"></div>
+    <button class="btn sec fechar">Voltar e editar</button>
+    <p>Posta e marca <b class="amarelo">@jorgerprado</b> 👀</p>
+  </div>
+</div>
+
+<!-- corte -->
+<div id="mCrop" class="modal oculto">
+  <p>Arrasta os cantos pra cortar · arrasta o meio pra mover</p>
+  <canvas id="cropTela"></canvas>
+  <div class="linha">
+    <button class="btn sec" id="cropOriginal">Sem corte</button>
+    <button class="btn" id="cropOk">Aplicar</button>
+  </div>
+  <button class="btn sec" id="cropCancelar">Cancelar</button>
+</div>
+
+<div id="toast" class="oculto"></div>
+
+<footer>
+  Feito por <a class="insta" href="https://www.instagram.com/jorgerprado/" target="_blank" rel="noopener">@jorgerprado</a><br>
+  Cenas e acessórios gerados por IA, exceto o vulcão: Stromboli por Wolfgang Beyer (<a href="https://commons.wikimedia.org/wiki/File:Stromboli_Eruption.jpg" target="_blank" rel="noopener">CC BY-SA 3.0</a>).
+  Cena "Rumbling": arte original de Nezzu, sobre Attack on Titan.<br>
+  O recorte roda no teu navegador. Nenhuma foto é enviada pra lugar nenhum.<br>
+  <a href="https://github.com/JorgeHRP/fimdomundo" target="_blank" rel="noopener">Código-fonte</a> (recorte de objetos: @imgly/background-removal, AGPL-3.0).
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

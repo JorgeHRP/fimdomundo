@@ -1,0 +1,6 @@
+bans.json
+bans.tmp
+__pycache__/
+*.pyc
+.git
+Dockerfile

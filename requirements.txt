@@ -1,0 +1,4 @@
+# versões travadas (servidor do site)
+uvicorn==0.34.0
+h11==0.16.0
+click==8.1.8
