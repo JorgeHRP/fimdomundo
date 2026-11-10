@@ -473,7 +473,7 @@ tela.addEventListener("pointerdown", e => {
   const p=ponto(e); toques.set(e.pointerId,p);
   if (toques.size===1){
     const bx=botaoX();
-    if (bx && Math.hypot(p.x-bx.x, p.y-bx.y) <= bx.raio*1.4){ toques.delete(e.pointerId); gesto=null; apagarSel(); return; }
+    if (bx && Math.hypot(p.x-bx.x, p.y-bx.y) <= bx.toque){ toques.delete(e.pointerId); gesto=null; apagarSel(); return; }
     const ordem=[...estado.camadas.filter(c=>!c.oculto).reverse(), estado.texto];
     const atual=camadaSel();
     const alvo = (atual && dentro(atual,p,1.0)) ? atual : ordem.find(l=>dentro(l,p));
@@ -555,12 +555,13 @@ function desenhar(final=false){
 // "×" de apagar: canto de cima à direita do item selecionado (só imagens), sempre dentro da tela
 function botaoX(){
   const l=camadaSel(); if(!l || l===estado.texto) return null;
-  const raio = 20 * W / (tela.getBoundingClientRect().width || W); // ~40 px na tela
+  const px = W / (tela.getBoundingClientRect().width || W);
+  const raio = 12 * px; // ~24 px na tela; o toque vale num círculo de 44 px
   const hw=l.w*l.s/2, hh=l.h*l.s/2, c=Math.cos(l.r), s=Math.sin(l.r);
   const cantos=[[hw,-hh],[-hw,-hh],[hw,hh],[-hw,hh]].map(([a,b])=>({x:l.x+a*c-b*s, y:l.y+a*s+b*c}));
   const p=cantos.reduce((m,q)=> (q.x-q.y > m.x-m.y ? q : m)); // o mais "acima e à direita" na tela
-  const m=raio+6;
-  return {x:Math.min(W-m, Math.max(m, p.x)), y:Math.min(H-m, Math.max(m, p.y)), raio};
+  const m=raio+6*px;
+  return {x:Math.min(W-m, Math.max(m, p.x)), y:Math.min(H-m, Math.max(m, p.y)), raio, toque:22*px};
 }
 // fonte: se não carregar, segue com a reserva (Impact) em vez de travar
 async function fonteOk(){ try { if (document.fonts) await Promise.race([document.fonts.load("96px Anton"), new Promise(r=>setTimeout(r,2500))]); } catch(e){} }
