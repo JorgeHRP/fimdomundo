@@ -121,7 +121,8 @@ for (const id of ["#rTam","#rRot"]) $(id).addEventListener("change", ()=>mexendo
 $("#tEspelhar").onclick = () => { const l=camadaSel(); if(l){ const f=foto(l); l.flip=!l.flip; moverFilhos(l,f); desenhar(); } };
 $("#tFrente").onclick = () => { const a=estado.camadas, i=a.indexOf(camadaSel()); if(i>=0 && i<a.length-1){ [a[i],a[i+1]]=[a[i+1],a[i]]; desenhar(); } };
 $("#tTras").onclick = () => { const a=estado.camadas, i=a.indexOf(camadaSel()); if(i>0){ [a[i],a[i-1]]=[a[i-1],a[i]]; desenhar(); } };
-$("#tApagar").onclick = () => { let l=camadaSel(); if(!l || l===estado.texto) return; if(l.cat==="cabeca" && l.pai){ l = estado.camadas.find(c=>c.id===l.pai) || l; } apagarCamada(l); atualizarBotoesFoto(); };
+function apagarSel(){ let l=camadaSel(); if(!l || l===estado.texto) return; if(l.cat==="cabeca" && l.pai){ l = estado.camadas.find(c=>c.id===l.pai) || l; } apagarCamada(l); atualizarBotoesFoto(); }
+$("#tApagar").onclick = apagarSel;
 $("#tFundo").onclick = () => { const l=camadaSel(); if(!l?.recorte) return; l.usarRecorte=!l.usarRecorte; l.crop=null; atualizarImg(l); atualizarFerramentas(); desenhar(); };
 $("#tHD").onclick = async () => {
   const l=camadaSel(); if(!l || l===estado.texto) return;
@@ -471,6 +472,8 @@ tela.addEventListener("pointerdown", e => {
   try{ tela.setPointerCapture(e.pointerId); }catch(err){}
   const p=ponto(e); toques.set(e.pointerId,p);
   if (toques.size===1){
+    const bx=botaoX();
+    if (bx && Math.hypot(p.x-bx.x, p.y-bx.y) <= bx.raio*1.4){ toques.delete(e.pointerId); gesto=null; apagarSel(); return; }
     const ordem=[...estado.camadas.filter(c=>!c.oculto).reverse(), estado.texto];
     const atual=camadaSel();
     const alvo = (atual && dentro(atual,p,1.0)) ? atual : ordem.find(l=>dentro(l,p));
@@ -539,7 +542,25 @@ function desenhar(final=false){
   const l=camadaSel();
   if (!final && l && (l!==estado.texto || $("#frase").value.trim())){
     ctx.save(); transf(ctx,l); ctx.setLineDash([18/l.s,12/l.s]); ctx.lineWidth=4/l.s; ctx.strokeStyle="rgba(255,214,10,.95)"; ctx.strokeRect(-l.w/2,-l.h/2,l.w,l.h); ctx.restore();
+    const bx=botaoX();
+    if (bx){
+      const {x,y,raio:R}=bx, k=R*0.36;
+      ctx.save(); ctx.beginPath(); ctx.arc(x,y,R,0,Math.PI*2); ctx.fillStyle="#e5383b"; ctx.fill();
+      ctx.lineWidth=R*0.16; ctx.strokeStyle="#fff"; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x-k,y-k); ctx.lineTo(x+k,y+k); ctx.moveTo(x+k,y-k); ctx.lineTo(x-k,y+k);
+      ctx.lineWidth=R*0.2; ctx.lineCap="round"; ctx.stroke(); ctx.restore();
+    }
   }
+}
+// "×" de apagar: canto de cima à direita do item selecionado (só imagens), sempre dentro da tela
+function botaoX(){
+  const l=camadaSel(); if(!l || l===estado.texto) return null;
+  const raio = 20 * W / (tela.getBoundingClientRect().width || W); // ~40 px na tela
+  const hw=l.w*l.s/2, hh=l.h*l.s/2, c=Math.cos(l.r), s=Math.sin(l.r);
+  const cantos=[[hw,-hh],[-hw,-hh],[hw,hh],[-hw,hh]].map(([a,b])=>({x:l.x+a*c-b*s, y:l.y+a*s+b*c}));
+  const p=cantos.reduce((m,q)=> (q.x-q.y > m.x-m.y ? q : m)); // o mais "acima e à direita" na tela
+  const m=raio+6;
+  return {x:Math.min(W-m, Math.max(m, p.x)), y:Math.min(H-m, Math.max(m, p.y)), raio};
 }
 // fonte: se não carregar, segue com a reserva (Impact) em vez de travar
 async function fonteOk(){ try { if (document.fonts) await Promise.race([document.fonts.load("96px Anton"), new Promise(r=>setTimeout(r,2500))]); } catch(e){} }
